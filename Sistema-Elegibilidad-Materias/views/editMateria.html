@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Materia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --secondary-color: #2ecc71;
+            --secondary-dark: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --gray-color: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+        }
+
+        h1 {
+            color: var(--dark-color);
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: var(--primary-dark);
+            margin: 20px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="time"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--light-gray);
+        }
+
+        .horario {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 10px;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .horario:hover {
+            background-color: #e3f2fd;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 8px 12px;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .previa-item {
+            display: grid;
+
+            gap: 15px;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .previa-item:hover {
+            background-color: #e8f5e9;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: var(--gray-color);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .horario {
+                grid-template-columns: 1fr;
+            }
+
+            .previa-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            box-shadow: var(--box-shadow);
+        }
+
+        .notification.success {
+            background-color: var(--secondary-color);
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .notification.error {
+            background-color: var(--danger-color);
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-out {
+            opacity: 0 !important;
+            transform: translateY(-20px) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1><i class="fas fa-edit"></i> Editar Materia</h1>
+        <form id="materiaForm">
+            <!-- Información básica -->
+            <div class="card">
+                <h3><i class="fas fa-info-circle"></i> Información Básica</h3>
+                <div class="grid-container">
+                    <div class="form-group">
+                        <label for="codigo"><i class="fas fa-barcode"></i> Código:</label>
+                        <input type="text" id="codigo" name="codigo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre"><i class="fas fa-font"></i> Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="creditos"><i class="fas fa-star"></i> Créditos:</label>
+                        <input type="number" id="creditos" name="creditos" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="semestre"><i class="fas fa-calendar-alt"></i> Semestre:</label>
+                        <input type="number" id="semestre" name="semestre" required min="1" max="6">
+                    </div>
+                </div>
+            </div>
+            <!-- Horarios -->
+            <div class="card">
+                <h3><i class="fas fa-clock"></i> Horarios</h3>
+                <div id="horariosContainer"></div>
+                <button type="button" id="addHorarioBtn" class="btn btn-secondary">
+                    <i class="fas fa-plus"></i> Agregar Horario
+                </button>
+            </div>
+            <!-- Previas -->
+            <div class="card">
+                <h3><i class="fas fa-link"></i> Materias Previas</h3>
+                <div id="previasContainer"></div>
+            </div>
+            <div class="actions">
+                <button type="button" id="cancelBtn" class="btn btn-danger">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+    <div id="notification" class="notification"></div>
+    <script>
+        const token = localStorage.getItem('token');
+        const urlParams = new URLSearchParams(window.location.search);
+        const materiaId = urlParams.get('id');
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            setTimeout(() => {
+                notification.classList.add('fade-out');
+                setTimeout(() => {
+                    notification.className = 'notification';
+                }, 300);
+            }, 3000);
+        }
+
+        // Cargar datos de la materia
+        async function loadMateria() {
+            try {
+                const res = await fetch(`/materias/${materiaId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error('Error al cargar la materia');
+                const materia = await res.json();
+
+                document.getElementById('codigo').value = materia.codigo;
+                document.getElementById('nombre').value = materia.nombre;
+                document.getElementById('creditos').value = materia.creditos;
+                document.getElementById('semestre').value = materia.semestre;
+
+                // Horarios
+                const horariosContainer = document.getElementById('horariosContainer');
+                horariosContainer.innerHTML = '';
+                (materia.horarios || []).forEach(h => {
+                    const div = document.createElement('div');
+                    div.classList.add('horario');
+                    div.innerHTML = `
+    <select name="dia" required>
+        <option value="">Seleccione un día</option>
+        ${["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"].map(d => `
+            <option value="${d}" ${h.dia === d ? 'selected' : ''}>${d}</option>
+        `).join('')}
+    </select>
+    <input type="time" name="horaInicio" value="${h.horaInicio}" required>
+    <input type="time" name="horaFin" value="${h.horaFin}" required>
+    <button type="button" class="btn btn-danger removeHorarioBtn">
+        <i class="fas fa-trash"></i> Eliminar
+    </button>
+`;
+                    horariosContainer.appendChild(div);
+                });
+
+                // Previas
+                await loadPrevias(materia.previas || []);
+            } catch (error) {
+                showNotification('Error al cargar la materia', 'error');
+            }
+        }
+
+        // Cargar todas las materias para seleccionar previas y mostrar las actuales
+        async function loadPrevias(previasActuales) {
+            try {
+                const res = await fetch('/materias', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error('Error al cargar las materias');
+                const materias = await res.json();
+                const container = document.getElementById('previasContainer');
+                container.innerHTML = '';
+
+                // Mostrar previas actuales con opción de eliminar
+                previasActuales.forEach((previa, idx) => {
+                    const div = document.createElement('div');
+                    div.className = 'previa-item';
+                    let previaInfo = '';
+                    if (previa.previa && previa.previa.nombre) {
+                        previaInfo = `<strong>${previa.tipo}</strong> de <span style="color:var(--primary-dark);font-weight:500">${previa.previa.codigo} - ${previa.previa.nombre}</span>`;
+                    } else {
+                        previaInfo = `<span style="color:var(--danger-color);font-weight:500">Materia previa eliminada</span>`;
+                    }
+                    div.innerHTML = `
+                        ${previaInfo}
+                        <button type="button" class="btn btn-danger btn-sm removePreviaBtn" data-idx="${idx}">
+                            <i class="fas fa-trash"></i> Eliminar Previa
+                        </button>
+                    `;
+                    container.appendChild(div);
+                });
+
+                // Agregar selector para nuevas previas
+                const selectDiv = document.createElement('div');
+                selectDiv.className = 'previa-item';
+                // Select de materia
+                const materiasFiltradas = materias.filter(m => m._id !== materiaId); // Filtra la materia actual
+
+                // Select de materia
+                const selectMateria = document.createElement('select');
+                selectMateria.name = 'nuevaPreviaMateria';
+                materiasFiltradas.forEach(m => {
+                    const option = document.createElement('option');
+                    option.value = m._id;
+                    option.textContent = `${m.codigo} - ${m.nombre}`;
+                    selectMateria.appendChild(option);
+                });
+                // Select tipo
+                const selectTipo = document.createElement('select');
+                selectTipo.name = 'nuevaPreviaTipo';
+                ['Examen', 'Curso'].forEach(op => {
+                    const option = document.createElement('option');
+                    option.value = op;
+                    option.textContent = op;
+                    selectTipo.appendChild(option);
+                });
+                // Botón agregar
+                const addBtn = document.createElement('button');
+                addBtn.type = 'button';
+                addBtn.className = 'btn btn-secondary btn-sm';
+                addBtn.innerHTML = '<i class="fas fa-plus"></i> Agregar Previa';
+                addBtn.onclick = () => {
+                    const previaId = selectMateria.value;
+                    const tipo = selectTipo.value;
+                    // Evitar duplicados
+                    if (previasActuales.some(p => p.previa && (p.previa._id === previaId || p.previa === previaId) && p.tipo === tipo)) {
+                        showNotification('Ya existe esa previa', 'error');
+                        return;
+                    }
+                    // Buscar la materia seleccionada
+                    const materiaSeleccionada = materias.find(m => m._id === previaId);
+                    previasActuales.push({ previa: materiaSeleccionada, tipo });
+                    loadPrevias(previasActuales);
+                };
+                selectDiv.appendChild(selectMateria);
+                selectDiv.appendChild(selectTipo);
+                selectDiv.appendChild(addBtn);
+                container.appendChild(selectDiv);
+
+                // Eliminar previa
+                container.querySelectorAll('.removePreviaBtn').forEach(btn => {
+                    btn.onclick = () => {
+                        const idx = parseInt(btn.getAttribute('data-idx'));
+                        previasActuales.splice(idx, 1);
+                        loadPrevias(previasActuales);
+                    };
+                });
+
+                // Guardar las previas en el formulario para el submit
+                container.dataset.previas = JSON.stringify(previasActuales);
+            } catch (error) {
+                showNotification('Error al cargar materias previas', 'error');
+            }
+        }
+
+        // Agregar horario dinámicamente
+        document.getElementById('addHorarioBtn').addEventListener('click', () => {
+            const container = document.getElementById('horariosContainer');
+            const div = document.createElement('div');
+            div.classList.add('horario');
+            div.innerHTML = `
+    <select name="dia" required>
+        <option value="">Seleccione un día</option>
+        ${["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"].map(d => `
+            <option value="${d}">${d}</option>
+        `).join('')}
+    </select>
+    <input type="time" name="horaInicio" required>
+    <input type="time" name="horaFin" required>
+    <button type="button" class="btn btn-danger removeHorarioBtn">
+        <i class="fas fa-trash"></i> Eliminar
+    </button>
+`;
+            container.appendChild(div);
+        });
+
+        // Eliminar horario
+        document.getElementById('horariosContainer').addEventListener('click', e => {
+            if (e.target.classList.contains('removeHorarioBtn') ||
+                e.target.closest('.removeHorarioBtn')) {
+                const btn = e.target.classList.contains('removeHorarioBtn') ?
+                    e.target : e.target.closest('.removeHorarioBtn');
+                btn.parentElement.remove();
+            }
+        });
+
+        // Cancelar
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            if (confirm('¿Desea cancelar la edición?')) {
+                window.location.href = '/inicio';
+            }
+        });
+
+        // Validar formulario
+        function validateForm() {
+            const codigo = document.getElementById('codigo').value;
+            const nombre = document.getElementById('nombre').value;
+            const creditos = document.getElementById('creditos').value;
+            const semestre = document.getElementById('semestre').value;
+            if (!codigo || !nombre || !creditos || !semestre) {
+                showNotification('Complete todos los campos obligatorios', 'error');
+                return false;
+            }
+
+            // Validar horarios
+            const horariosDivs = document.querySelectorAll('.horario');
+            for (let div of horariosDivs) {
+                const dia = div.querySelector('select[name="dia"]').value; // Cambiado a select
+                const horaInicio = div.querySelector('input[name="horaInicio"]').value;
+                const horaFin = div.querySelector('input[name="horaFin"]').value;
+                if (!dia || !horaInicio || !horaFin) {
+                    showNotification('Complete todos los campos de horario', 'error');
+                    return false;
+                }
+                if (horaInicio >= horaFin) {
+                    showNotification('La hora de inicio debe ser anterior a la hora de fin', 'error');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Guardar cambios
+        document.getElementById('materiaForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            if (!validateForm()) return;
+
+            const form = e.target;
+            const codigo = form.codigo.value;
+            const nombre = form.nombre.value;
+            const creditos = parseInt(form.creditos.value);
+            const semestre = parseInt(form.semestre.value);
+
+            // Horarios
+            const horariosDivs = document.querySelectorAll('.horario');
+            const horarios = Array.from(horariosDivs).map(div => ({
+                dia: div.querySelector('select[name="dia"]').value, // Cambiado a select
+                horaInicio: div.querySelector('input[name="horaInicio"]').value,
+                horaFin: div.querySelector('input[name="horaFin"]').value
+            }));
+
+            // Previas
+            const previasContainer = document.getElementById('previasContainer');
+            let previas = [];
+            try {
+                previas = JSON.parse(previasContainer.dataset.previas || '[]');
+            } catch {
+                previas = [];
+            }
+
+            // Transformar previas para enviar solo el ID y tipo
+            const previasToSend = previas.map(p => ({
+                previa: p.previa._id || p.previa,
+                tipo: p.tipo
+            }));
+
+            try {
+                const res = await fetch(`/materias/${materiaId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ codigo, nombre, creditos, semestre, horarios, previas: previasToSend })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showNotification('Materia actualizada correctamente');
+                    setTimeout(() => {
+                        window.location.href = '/inicio';
+                    }, 1000);
+                } else {
+                    showNotification('Error: ' + (data.message || 'No se pudo actualizar la materia'), 'error');
+                }
+            } catch (error) {
+                showNotification('Error de conexión', 'error');
+            }
+        });
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!token) {
+                showNotification('Debe iniciar sesión', 'error');
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
+                return;
+            }
+            loadMateria();
+        });
+    </script>
+</body>
+
+</html>
